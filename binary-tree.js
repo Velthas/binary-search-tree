@@ -48,6 +48,19 @@ function BinaryTree(array) {
   return newTree;
 }
 
+// Insert a node in a tree
+// Worth noting that this severely debalances the tree in the long run
+function insert(value, node) {
+  // Determine where the value should be (left or right)
+  const direction = value > node.data ? 'right' : 'left';
+  // If there is nothing in the direction the number should be
+  // Then we have found its place
+  if (node[direction] === null) {
+    const newNode = NodeCreate(value, null, null);
+    node[direction] = newNode;
+  } else insert(value, node[direction]); // Otherwise recursively keep going
+}
+
 const myTree = BinaryTree(sortedArray);
 
 prettyPrint(myTree.root);
