@@ -7,9 +7,14 @@ function NodeCreate(data, leftNode, rightNode) {
   return newNode;
 }
 
+const binaryTreeMethods = {
+  buildTree,
+  insert,
+};
+
 // Binary Tree Factory
 function BinaryTree(array) {
-  const newTree = {};
+  const newTree = Object.create(binaryTreeMethods);
   newTree.root = buildTree(array);
   return newTree;
 }
@@ -49,7 +54,7 @@ function buildTree(array, start = 0, end = array.length - 1) {
 
 // Insert a node in a tree
 // Worth noting that this severely debalances the tree in the long run
-function insert(value, node) {
+function insert(value, node = this.root) {
   // Determine where the value should be (left or right)
   const direction = value > node.data ? 'right' : 'left';
   // If there is nothing in the direction the number should be
