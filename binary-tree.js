@@ -10,6 +10,10 @@ function NodeCreate(data, leftNode, rightNode) {
 const binaryTreeMethods = {
   buildTree,
   insert,
+  delete: deleteVal,
+  find,
+  levelOrder,
+  recursiveLevelOrder,
 };
 
 // Binary Tree Factory
@@ -63,6 +67,87 @@ function insert(value, node = this.root) {
     const newNode = NodeCreate(value, null, null);
     node[direction] = newNode;
   } else insert(value, node[direction]); // Otherwise recursively keep going
+}
+
+// Deletes a node in the tree
+function deleteVal(value, currentNode = this.root, previousNode = null) {
+  // Determine where the value should be (left or right)
+  let direction = value > currentNode.data ? 'right' : 'left';
+  // This doubles as base case
+  if (currentNode.data === value) {
+    switch (true) {
+      // When the node to delete has no extra linked values
+      // We can just replace it with null with no consequences
+      case currentNode.left === null && currentNode.right === null:
+        direction = previousNode.data > value ? 'left' : 'right';
+        previousNode[direction] = null;
+        return;
+      // When we have left and right references we must take care of them
+      // In a binary tree left stores always the smaller value
+      case currentNode.left !== null && currentNode.right !== null:
+        // See if our current node is linked to left or right of previous node
+        direction = previousNode.data > value ? 'left' : 'right';
+        // Store a reference of the right of node to be deleted
+        // All values to the right will be greater than the node's value
+        // so we can assume next right value will be bigger than all left values.
+        const oldRightReference = currentNode.right;
+        // We perform a switch, the node to be deleted is replaced with its left node.
+        // Left node and children always are smaller than value to the right and root
+        previousNode[direction] = currentNode.left;
+        // Traverse to the right until null is found
+        let traversedNode = previousNode[direction];
+        while (traversedNode.right !== null) {
+          traversedNode = traversedNode.right;
+        }
+        // When we have hit null, we can append what was
+        // originally at the right of the deleted node
+        traversedNode.right = oldRightReference;
+        return;
+      // If we only have one child to the deleted element
+      // it suffices to make that into the deleted element
+      case currentNode.left !== null || currentNode.right !== null:
+        direction = previousNode.data > value ? 'left' : 'right';
+        previousNode[direction] = currentNode.left === null ? currentNode.right : currentNode.left;
+        break;
+      default:
+    }
+  } else deleteVal(value, currentNode[direction], currentNode);
+}
+
+// Accepts a value and returns the node with the given value
+function find(value, node = this.root) {
+  if (node.data === value) return node;
+  return find(value, (node = node.data > value ? node.left : node.right));
+}
+
+function levelOrder(callback) {
+  const queue = [];
+  const result = [];
+  // For loop to run, the queue needs to have at least 1 element.
+  // First level is root level, so we use the root of the tree
+  queue.push(this.root);
+
+  while (queue.length > 0) {
+    // Insert data attribute of node into result tree
+    result.push(queue[0].data);
+    // For each node traversed, push its children into the queue
+    if (queue[0].left !== null) queue.push(queue[0].left);
+    if (queue[0].right !== null) queue.push(queue[0].right);
+    // When a callback is passed as argument we pass each node to it
+    if (callback) callback(queue[0]);
+    // Remove first element in queue after it is processed
+    queue.shift();
+  }
+  return result;
+}
+
+function recursiveLevelOrder(callback, queue = [this.root], results = []) {
+  if (queue.length === 0) return results; // We hit base case when the queue is empty
+  results.push(queue[0].data); // If not push the data onto the results array
+  if (queue[0].left !== null) queue.push(queue[0].left);
+  if (queue[0].right !== null) queue.push(queue[0].right);
+  queue.shift();
+  return recursiveLevelOrder(callback, queue, results); // Recursive step
 }
 
 const myTree = BinaryTree(sortedArray);
