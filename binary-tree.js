@@ -1,6 +1,31 @@
 // Small sorted array to use for tests
 const sortedArray = [1, 2, 3, 4, 5, 6, 7];
 
+// Node Factory
+function NodeCreate(data, leftNode, rightNode) {
+  const newNode = { data, left: leftNode, right: rightNode };
+  return newNode;
+}
+
+// Binary Tree Factory
+function BinaryTree(array) {
+  const newTree = {};
+  newTree.root = buildTree(array);
+  return newTree;
+}
+
+// This function is not mine, provided by a TOP student
+// It gives a visual representation of the tree in the console
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+  if (node.right !== null) {
+    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+  }
+  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+  if (node.left !== null) {
+    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+  }
+};
+
 // Function that takes an ordered array as argument and returns binary tree
 function buildTree(array, start = 0, end = array.length - 1) {
   // When start and end cross, we have no more numbers to append
@@ -20,32 +45,6 @@ function buildTree(array, start = 0, end = array.length - 1) {
 
   // Return the root at the end of it all.
   return newNode;
-}
-
-// This function is not mine, provided by a TOP student
-// It gives a visual representation of the tree in the console
-// Thank you kind stranger!
-const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
-};
-
-// Factory for nodes
-function NodeCreate(data, leftNode, rightNode) {
-  const newNode = { data, left: leftNode, right: rightNode };
-  return newNode;
-}
-
-// Binary Tree Factory
-function BinaryTree(array) {
-  const newTree = {};
-  newTree.root = buildTree(array);
-  return newTree;
 }
 
 // Insert a node in a tree
