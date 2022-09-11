@@ -150,6 +150,63 @@ function recursiveLevelOrder(callback, queue = [this.root], results = []) {
   return recursiveLevelOrder(callback, queue, results); // Recursive step
 }
 
+// Three depth-first search methods that return an array
+// Or apply a callback to every node that is provided to it
+function inorder(callback, node = this.root, array = []) {
+  if (node === null) return array;
+
+  inorder(callback, node.left, array); // Visit left node
+  array.push(node.data); // Add root node
+  if (callback) console.log(callback(node));
+  return inorder(callback, node.right, array); // Visit right node and return when solved
+}
+
+function preorder(callback, node = this.root, array = []) {
+  if (node === null) return array;
+
+  array.push(node.data); // Add root to array
+  if (callback) console.log(callback(node));
+  preorder(callback, node.left, array); // Visit left node
+  return preorder(callback, node.right, array); // Visit right node and return when solved
+}
+
+function postorder(callback, node = this.root, array = []) {
+  if (node === null) return array;
+
+  postorder(callback, node.left, array); // Visit left node
+  postorder(callback, node.right, array); // Visit right node
+  if (callback) console.log(callback(node));
+  array.push(node.data); // Add root to array
+  return array;
+}
+
+// Calculates depth of a node
+function depth(node, traversedNode = this.root) {
+  if (node.data === traversedNode.data) return 0;
+  return (
+    1 + depth(
+      node,
+      traversedNode.data > node.data
+        ? traversedNode.left
+        : traversedNode.right,
+    )
+  );
+}
+
+// Calculates height of a node
+function height(node) {
+  // Leaf node will have height of 0
+  // thus to prevent our height from being skewed we return -1 on base case
+  // which will return the appropriate height (0);
+  if (node === null) return -1;
+
+  // Recursively check height of left and right subtree
+  const left = height(node.left);
+  const right = height(node.right);
+
+  return Math.max(left, right) + 1; // Return the greater of the two values + 1
+}
+
 const myTree = BinaryTree(sortedArray);
 
 prettyPrint(myTree.root);
