@@ -14,6 +14,13 @@ const binaryTreeMethods = {
   find,
   levelOrder,
   recursiveLevelOrder,
+  inorder,
+  preorder,
+  postorder,
+  depth,
+  height,
+  isBalanced,
+  rebalance
 };
 
 // Binary Tree Factory
@@ -205,6 +212,27 @@ function height(node) {
   const right = height(node.right);
 
   return Math.max(left, right) + 1; // Return the greater of the two values + 1
+}
+
+// A binary tree is balanced if difference in depth between
+// right subtree and left subtree is no greater than one
+// this function returns true if tree is balanced, false
+function isBalanced() {
+  // We first check size of left and right subtree
+  const leftHeight = this.height(this.root.left);
+  const rightHeight = this.height(this.root.right);
+  // Calculate the difference
+  const heightDifference = Math.max(leftHeight, rightHeight) - Math.min(leftHeight, rightHeight);
+  return !(heightDifference > 1);
+}
+
+// Uses functions we already defined to rebalance the tree
+function rebalance() {
+  // Fetch an array with all sorted values
+  // eslint-disable-next-line no-const-assign
+  const aSortedArray = this.inorder();
+  // Use it to build tree
+  this.root = buildTree(aSortedArray);
 }
 
 const myTree = BinaryTree(sortedArray);
