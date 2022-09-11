@@ -238,6 +238,44 @@ function rebalance() {
   this.root = buildTree(aSortedArray);
 }
 
+// This function tests pretty much all I've done here
+function driverScript() {
+  // Generate random no dupes array
+  // and sort it using my mergesort algorithm
+  const array = mergeSort(randomNoDupesArray(120));
+  const newTree = BinaryTree(array);
+
+  // If the tree is balanced print its content using breadth-first
+  // and depth-first search algorithms
+  if (newTree.isBalanced()) {
+    newTree.recursiveLevelOrder();
+    newTree.preorder();
+    newTree.postorder();
+    newTree.inorder();
+  }
+
+  // Debalance the tree
+  newTree.insert(2000);
+  newTree.insert(2001);
+  newTree.insert(2002);
+  newTree.insert(2003);
+  newTree.insert(2004);
+  newTree.insert(2005);
+
+  // Verify it is debalanced
+  prettyPrint(newTree.root);
+  console.log(newTree.isBalanced());
+
+  // Rebalance it
+  newTree.rebalance();
+
+  // See if it worked
+  console.log(newTree.isBalanced());
+  prettyPrint(newTree.root);
+}
+
+driverScript();
+
 const myTree = BinaryTree(sortedArray);
 
 prettyPrint(myTree.root);
