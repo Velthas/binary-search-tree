@@ -1,3 +1,6 @@
+import { mergeSort } from './modules/merge-sort';
+import { randomNoDupesArray } from './modules/random-unique-array';
+
 // Small sorted array to use for tests
 const sortedArray = [1, 2, 3, 4, 5, 6, 7];
 
