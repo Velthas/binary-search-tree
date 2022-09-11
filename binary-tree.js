@@ -1,8 +1,5 @@
-import { mergeSort } from './modules/merge-sort';
-import { randomNoDupesArray } from './modules/random-unique-array';
-
-// Small sorted array to use for tests
-const sortedArray = [1, 2, 3, 4, 5, 6, 7];
+import { mergeSort } from './modules/merge-sort.js';
+import { randomNoDupesArray } from './modules/random-unique-array.js';
 
 // Node Factory
 function NodeCreate(data, leftNode, rightNode) {
@@ -242,7 +239,7 @@ function rebalance() {
 function driverScript() {
   // Generate random no dupes array
   // and sort it using my mergesort algorithm
-  const array = mergeSort(randomNoDupesArray(120));
+  const array = mergeSort(randomNoDupesArray(35));
   const newTree = BinaryTree(array);
 
   // If the tree is balanced print its content using breadth-first
@@ -275,7 +272,3 @@ function driverScript() {
 }
 
 driverScript();
-
-const myTree = BinaryTree(sortedArray);
-
-prettyPrint(myTree.root);
